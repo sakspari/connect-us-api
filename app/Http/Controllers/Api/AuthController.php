@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use Illuminate\Validation\Rule;
 use Validator;
 
 class AuthController extends Controller
@@ -17,7 +18,7 @@ class AuthController extends Controller
             'name' => 'required|max:60',
             'gender' => 'required',
             'dateborn' => 'required|date_format:Y-m-d',
-            'email' => 'required',
+            'email' => 'required|unique:users',
             'username' => 'required|unique:users',
             'password' => 'required'
         ]); // membuat rule validasi input
@@ -33,6 +34,25 @@ class AuthController extends Controller
         ], 200); //return data user dalam bentuk json
     }
 
+    // show data user tertentu
+    public function show($id)
+    {
+        $users = User::find($id); //mencari course berdasarkan data id
+
+        if (!is_null($users)) {
+            return response([
+                'message' => 'Retrive User Success',
+                'data' => $users
+            ], 200);
+        }
+
+        return response([
+            'message' => 'User Not Found',
+            'data' => null
+        ], 404);
+    }
+
+    //login
     public function login(Request $request)
     {
         $loginData = $request->all();
@@ -57,4 +77,72 @@ class AuthController extends Controller
             'access_token' => $token
         ]); // return data user dan token dalam bentuk json
     }
+
+    //update data user
+    public function update(Request $request, $id){
+        $users = User::find($id);
+        if(is_null($users)){
+            return response([
+                'message'=>'User Not Found',
+                'data'=>null
+            ],400);
+        }
+
+        $updateData = $request->all();
+        $validate = Validator::make($updateData, [
+            'name' => 'required|max:60',
+            'email' => ['required','email',Rule::unique('users')->ignore($users)],
+            'gender' => 'required',
+            'dateborn' => 'required|date_format:Y-m-d',
+            'username' => ['required',Rule::unique('users')->ignore($users)],
+            'password' => 'required'
+        ]); // validasi data
+
+        if ($validate->fails()) {
+            return response(['message' => $validate->errors()], 400);
+        }
+        $users->name = $updateData['name'];
+        $users->email = $updateData['email'];
+        $users->email = $updateData['gender'];
+        $users->email = $updateData['dateborn'];
+        $users->email = $updateData['username'];
+        $users->password = bcrypt($updateData['password']);;
+
+        if($users->save()){
+            return response([
+                'message'=> 'Update User Success',
+                'data'=>$users
+            ],200);
+        }
+        return response([
+            'message'=>'Update User Failed',
+            'data'=>null
+        ],400);
+    }
+
+    //    method untuk menghapus user tertentu
+    public function destroy($id)
+    {
+        $users = User::find($id);
+
+        if(is_null($users)){
+            return response([
+                'message'=>'User Not Found',
+                'data'=>null
+            ],400);
+        }//return message saat database tidak ditemukan
+
+        if($users->delete()){
+            return response([
+                'message'=>'Delete User Success',
+                'data'=>$users
+            ],200);
+        }
+
+        return response([
+            'message'=>'Delete user Failed',
+            'data'=>null
+        ],400);
+    }
+
 }
