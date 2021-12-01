@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
@@ -28,6 +29,9 @@ class AuthController extends Controller
 
         $registrationData['password'] = bcrypt($request->password); // enkripsi password
         $user = User::create($registrationData); // membuat user baru
+
+        event(new Registered($user));
+
         return response([
             'message' => 'Register Success',
             'user' => $user
