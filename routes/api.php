@@ -20,3 +20,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('register', 'Api\AuthController@register');
 Route::post('login', 'Api\AuthController@login');
+
+Route::group(['middleware' => 'auth:api'], function () {
+    Route::get('comment', 'Api\CommentController@index');
+    Route::get('comment/{id}', 'Api\CommentController@show');
+    Route::get('comment/post/{post_id}', 'Api\CommentController@showInPost');
+    Route::post('comment', 'Api\CommentController@store');
+    Route::post('comment/{post_id}/{user_id}', 'Api\CommentController@storeInPost');
+    Route::put('comment/{id}', 'Api\CommentController@update');
+    Route::delete('comment/{id}', 'Api\CommentController@destroy');
+});
