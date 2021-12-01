@@ -29,7 +29,9 @@ class AuthController extends Controller
 
         $registrationData['password'] = bcrypt($request->password); // enkripsi password
         $user = User::create($registrationData); // membuat user baru
+
         event(new Registered($user));
+
         return response([
             'message' => 'Register Success',
             'user' => $user
