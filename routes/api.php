@@ -30,6 +30,9 @@ Route::post('/email/verify/resend', function (Request $request) {
     return back()->with('message', 'Verification link sent!');
 })->middleware(['auth:api', 'throttle:6,1'])->name('verification.send');
 
+Route::get('/email/verify/success', function () {
+    return view('mail');
+});
 
 Route::group(['middleware'=>'auth:api'],function(){ //setelah login baru bisa dijalankan
     Route::get('users/{id}','Api\AuthController@show');
