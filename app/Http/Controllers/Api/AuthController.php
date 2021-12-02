@@ -99,7 +99,7 @@ class AuthController extends Controller
             'gender' => 'required',
             'dateborn' => 'required|date_format:Y-m-d',
             'username' => ['required',Rule::unique('users')->ignore($users)],
-            'password' => 'required'
+            'password' => ''
         ]); // validasi data
 
         if ($validate->fails()) {
@@ -109,7 +109,9 @@ class AuthController extends Controller
         $users->gender = $updateData['gender'];
         $users->dateborn = $updateData['dateborn'];
         $users->username = $updateData['username'];
-        $users->password = bcrypt($updateData['password']);;
+        if ($updateData['password'] != ""){
+            $users->password = bcrypt($updateData['password']);
+        }
 
         if($users->save()){
             return response([
