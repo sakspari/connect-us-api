@@ -40,6 +40,7 @@ Route::group(['middleware'=>'auth:api'],function(){ //setelah login baru bisa di
     Route::delete('users/{id}','Api\AuthController@destroy');
 
     Route::get('followers/{id}', 'Api\FollowersController@show');
+    Route::get('followers/name/{id}', 'Api\FollowersController@showName');
     Route::get('followers/find/{id}', 'Api\FollowersController@find');
     Route::delete('followers/{id}', 'Api\FollowersController@destroy');
     Route::post('followers', 'Api\FollowersController@store');

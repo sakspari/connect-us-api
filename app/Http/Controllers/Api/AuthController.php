@@ -55,6 +55,7 @@ class AuthController extends Controller
             'data' => null
         ], 404);
     }
+    
 
     //login
     public function login(Request $request)

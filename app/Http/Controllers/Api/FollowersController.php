@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Validator;
 use App\Models\Followers;
+use App\Models\User;
 
 
 class FollowersController extends Controller
@@ -14,6 +15,23 @@ class FollowersController extends Controller
     public function show($id)
     {
         $followers = Followers::where('user_id_1', '=' , $id)->get();
+        
+        if (!is_null($followers)) {
+            return response([
+                'message' => 'Retrieve All Followers Success',
+                'data' => $followers
+            ], 200);
+        }
+
+        return response([
+            'message' => 'Followers not found',
+            'data' => null
+        ], 404);
+    }
+
+    public function showName($id)
+    {
+        $followers = Followers::join('Users','Followers.user_id_2','=','users.id')->where('user_id_1', '=' , $id)->pluck('name')->toArray();
         
         if (!is_null($followers)) {
             return response([
