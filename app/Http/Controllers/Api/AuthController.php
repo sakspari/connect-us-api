@@ -95,7 +95,6 @@ class AuthController extends Controller
         $updateData = $request->all();
         $validate = Validator::make($updateData, [
             'name' => 'required|max:60',
-            'email' => ['required','email',Rule::unique('users')->ignore($users)],
             'gender' => 'required',
             'dateborn' => 'required|date_format:Y-m-d',
             'username' => ['required',Rule::unique('users')->ignore($users)],
@@ -106,10 +105,9 @@ class AuthController extends Controller
             return response(['message' => $validate->errors()], 400);
         }
         $users->name = $updateData['name'];
-        $users->email = $updateData['email'];
-        $users->email = $updateData['gender'];
-        $users->email = $updateData['dateborn'];
-        $users->email = $updateData['username'];
+        $users->gender = $updateData['gender'];
+        $users->dateborn = $updateData['dateborn'];
+        $users->username = $updateData['username'];
         $users->password = bcrypt($updateData['password']);;
 
         if($users->save()){

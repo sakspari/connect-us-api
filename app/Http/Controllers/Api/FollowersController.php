@@ -13,7 +13,7 @@ class FollowersController extends Controller
 {
     public function show($id)
     {
-        $followers = Follower::where('user_id_1', '=' , $id)->get();
+        $followers = Followers::where('user_id_1', '=' , $id)->get();
         
         if (!is_null($followers)) {
             return response([
@@ -30,7 +30,7 @@ class FollowersController extends Controller
 
     public function find($id)
     {
-        $follower = Follower::where('user_id_2', '=' , $id)->get();
+        $follower = Followers::where('user_id_2', '=' , $id)->get();
         
         if (!is_null($follower)) {
             return response([
@@ -58,7 +58,7 @@ class FollowersController extends Controller
             return response(['message' => $validate->errors()], 400);
         }
 
-        $follower = Follower::create($storeData);
+        $follower = Followers::create($storeData);
         return response([
             'message' => 'Add Follower Success',
             'data' => $follower
@@ -67,7 +67,7 @@ class FollowersController extends Controller
 
     public function destroy($id)
     {
-        $follower = Follower::find($id);
+        $follower = Followers::find($id);
         
         if (is_null($follower)) {
             return response([

@@ -44,19 +44,11 @@ Route::group(['middleware'=>'auth:api'],function(){ //setelah login baru bisa di
     Route::delete('followers/{id}', 'Api\FollowersController@destroy');
     Route::post('followers', 'Api\FollowersController@store');
 
-    Route::get('followers/{id}', 'Api\FollowersController@show');
-    Route::get('followers/find/{id}', 'Api\FollowersController@find');
-    Route::delete('followers/{id}', 'Api\FollowersController@destroy');
-    Route::post('followers', 'Api\FollowersController@store');
-
     Route::get('post/{id}', 'Api\PostController@show');
     Route::delete('post/{id}', 'Api\PostController@destroy');
     Route::post('post', 'Api\PostController@store');
     Route::put('post/{id}', 'Api\PostController@update');
-});
 
-
-Route::group(['middleware' => 'auth:api'], function () {
     Route::get('comment', 'Api\CommentController@index');
     Route::get('comment/{id}', 'Api\CommentController@show');
     Route::get('comment/post/{post_id}', 'Api\CommentController@showInPost');
@@ -65,3 +57,5 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::put('comment/{id}', 'Api\CommentController@update');
     Route::delete('comment/{id}', 'Api\CommentController@destroy');
 });
+
+
