@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Validator;
 use App\Models\Post;
+use App\Models\User;
 
 
 class PostController extends Controller
@@ -14,6 +15,23 @@ class PostController extends Controller
     public function show($id)
     {
         $posts = Post::where('user_id', '=' , $id)->get();
+        
+        if (!is_null($posts)) {
+            return response([
+                'message' => 'Retrieve All posts Success',
+                'data' => $posts
+            ], 200);
+        }
+
+        return response([
+            'message' => 'posts not found',
+            'data' => null
+        ], 404);
+    }
+
+    public function showAll()
+    {
+        $posts = Post::join('users', 'users.id', '=', 'Posts.user_id')->select('posts.id','post_content', 'user_id', 'name')->get();
         
         if (!is_null($posts)) {
             return response([
