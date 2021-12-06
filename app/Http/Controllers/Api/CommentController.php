@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Validator;
 use App\Models\Comment;
+use App\Models\User;
 
 class CommentController extends Controller
 {
@@ -14,6 +15,7 @@ class CommentController extends Controller
     public function index()
     {
         $comment = Comment::all();  //mengambil semua data course
+        $comment = Comment::join('users', 'users.id', '=', 'comments.user_id')->select('name','comments.id AS id', 'user_id', 'post_id', 'content')->get();
 
         if (count($comment) > 0) {
             return response([

@@ -31,7 +31,7 @@ class PostController extends Controller
 
     public function showAll()
     {
-        $posts = Post::join('users', 'users.id', '=', 'Posts.user_id')->select('posts.id','post_content', 'user_id', 'name')->get();
+        $posts = Post::join('users', 'users.id', '=', 'Posts.user_id')->select('posts.id AS id','post_content', 'user_id', 'name')->get();
         
         if (!is_null($posts)) {
             return response([
