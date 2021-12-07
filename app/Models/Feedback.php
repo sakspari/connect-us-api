@@ -12,7 +12,7 @@ class Feedback extends Model
     use HasFactory;
 
     protected $fillable = [
-        'feedback_id', 'feedback_content', 'feedback_star', 'user_id'
+        'feedback_content', 'feedback_star', 'user_id'
     ];
 
     public function getCreatedAtAttribute()
