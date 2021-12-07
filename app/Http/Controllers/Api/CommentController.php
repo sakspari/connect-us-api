@@ -130,6 +130,30 @@ class CommentController extends Controller
         ], 400);  // return message saat gagal menghapus data course
     }
 
+    public function destroyPost($idPost)
+    {
+        $comment = Comment::where('post_id',$idPost); // mencari data product berdasarkan id
+
+        if (is_null($comment)) {
+            return response([
+                'message' => 'Comment Not Found',
+                'data' => null
+            ], 404);
+        } // return message saat data course tidak ditemukan
+
+        if ($comment->delete()) {
+            return response([
+                'message' => 'Delete Comment Post Success',
+                'data' => $comment
+            ], 200);
+        } // return messsage saat berhasil menghapus data course
+
+        return response([
+            'message' => 'Delete Comment Failed',
+            'data' => null
+        ], 400);  // return message saat gagal menghapus data course
+    }
+    
     // method untuk mengubah data 1 course (update)
     public function update(Request $request, $id)
     {
