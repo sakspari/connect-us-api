@@ -8,6 +8,7 @@ use Illuminate\Validation\Rule;
 use Validator;
 use App\Models\Post;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 
 class PostController extends Controller
@@ -15,7 +16,7 @@ class PostController extends Controller
     public function show($id)
     {
         $posts = Post::where('user_id', '=' , $id)->get();
-        
+
         if (!is_null($posts)) {
             return response([
                 'message' => 'Retrieve All posts Success',
@@ -29,10 +30,33 @@ class PostController extends Controller
         ], 404);
     }
 
+    // original:
+
+//    public function showAll()
+//    {
+//        $posts = Post::join('users', 'users.id', '=', 'Posts.user_id')->->get();
+//
+//        if (!is_null($posts)) {
+//            return response([
+//                'message' => 'Retrieve All posts Success',
+//                'data' => $posts
+//            ], 200);
+//        }
+//
+//        return response([
+//            'message' => 'posts not found',
+//            'data' => null
+//        ], 404);
+//    }
+
+//test
     public function showAll()
     {
-        $posts = Post::join('users', 'users.id', '=', 'Posts.user_id')->select('posts.id AS id','post_content', 'user_id', 'name')->get();
-        
+        $posts = DB::table('users')
+            ->join('posts','users.id','=','posts.user_id')
+            ->select('posts.id AS id','post_content', 'user_id', 'name')
+            ->get();
+
         if (!is_null($posts)) {
             return response([
                 'message' => 'Retrieve All posts Success',
@@ -69,7 +93,7 @@ class PostController extends Controller
     public function destroy($id)
     {
         $post = Post::find($id);
-        
+
         if (is_null($post)) {
             return response([
                 'message' => 'Post Not Found',
@@ -107,7 +131,7 @@ class PostController extends Controller
         ]);
 
         if ($validate->fails())
-        { 
+        {
             return response(['message' => $validate->errors()], 400);
         }
 
