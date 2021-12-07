@@ -34,6 +34,8 @@ Route::get('/email/verify/success', function () {
     return view('mail');
 });
 
+Route::get('feedback/index', 'Api\FeedbackController@index');
+
 Route::group(['middleware'=>'auth:api'],function(){ //setelah login baru bisa dijalankan
     Route::get('users/{id}','Api\AuthController@show');
     Route::put('users/{id}','Api\AuthController@update');
@@ -62,7 +64,6 @@ Route::group(['middleware'=>'auth:api'],function(){ //setelah login baru bisa di
     Route::delete('comment/post/{idPost}', 'Api\CommentController@destroyPost');
 
     Route::get('feedback/{id}', 'Api\FeedbackController@show');
-    Route::get('feedback/index', 'Api\FeedbackController@index');
     Route::delete('feedback/{id}', 'Api\FeedbackController@destroy');
     Route::post('feedback', 'Api\FeedbackController@store');
     Route::put('feedback/{id}', 'Api\FeedbackController@update');

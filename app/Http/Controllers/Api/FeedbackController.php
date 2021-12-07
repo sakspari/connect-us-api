@@ -16,7 +16,7 @@ class FeedbackController extends Controller
     {
         $feedbacks = DB::table('feedback')
             ->join('users', 'users.id', '=', 'feedback.user_id')
-            ->select('id', 'feedback_content', 'feedback_star', 'name')
+            ->select('feedback.id AS id', 'feedback_content', 'feedback_star', 'name')
             ->get();
         
         if (!is_null($feedbacks)) {
