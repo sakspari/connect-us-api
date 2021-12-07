@@ -55,7 +55,7 @@ class AuthController extends Controller
             'data' => null
         ], 404);
     }
-    
+
 
     //login
     public function login(Request $request)
@@ -72,8 +72,12 @@ class AuthController extends Controller
         if (!Auth::attempt($loginData))
             return response(['message' => 'Invalid Credentials'], 401); // return error gagal login
 
+
         $user = Auth::User();
+        if($user->email_verified_at!=null)
         $token = $user->createToken('Authentication Token')->accessToken; // generate token
+        else
+            return response(['message'=>'Email Not verified!'],401);
 
         return response([
             'message' => 'Authenticated',

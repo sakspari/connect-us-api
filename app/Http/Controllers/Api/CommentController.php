@@ -14,7 +14,7 @@ class CommentController extends Controller
     // method untuk menampilkan semua data product (read)
     public function index()
     {
-        $comment = Comment::all();  //mengambil semua data course
+        $comment = Comment::all();  //mengambil semua data comment
         $comment = Comment::join('users', 'users.id', '=', 'comments.user_id')->select('name','comments.id AS id', 'user_id', 'post_id', 'content')->get();
 
         if (count($comment) > 0) {
@@ -77,7 +77,7 @@ class CommentController extends Controller
 
         if ($validate->fails())
             return response(['message' => $validate->errors()], 400); // return error invalid input
-            
+
         $comment = Comment::create($storeData);
         return response([
             'message' => 'Add Comment Success',
@@ -94,10 +94,10 @@ class CommentController extends Controller
 
         if ($validate->fails())
             return response(['message' => $validate->errors()], 400); // return error invalid input
-        
+
         // data post_id sama user_id dapet dari view Post
         $storeData['post_id'] = $post_id;
-        $storeData['user_id'] = $user_id;   
+        $storeData['user_id'] = $user_id;
         $comment = Comment::create($storeData);
         return response([
             'message' => 'Add Comment in Post Success',
@@ -106,7 +106,7 @@ class CommentController extends Controller
     }
 
     // method untuk menghapus 1 data product (delete)
-    public function destroy($id) 
+    public function destroy($id)
     {
         $comment = Comment::find($id); // mencari data product berdasarkan id
 

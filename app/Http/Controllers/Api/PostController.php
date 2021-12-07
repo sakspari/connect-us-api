@@ -15,7 +15,7 @@ class PostController extends Controller
 {
     public function show($id)
     {
-        $posts = Post::where('user_id', '=' , $id)->get();
+        $posts = Post::where('user_id', '=', $id)->get();
 
         if (!is_null($posts)) {
             return response([
@@ -53,13 +53,38 @@ class PostController extends Controller
     public function showAll()
     {
         $posts = DB::table('users')
-            ->join('posts','users.id','=','posts.user_id')
-            ->select('posts.id AS id','post_content', 'user_id', 'name')
+            ->join('posts', 'users.id', '=', 'posts.user_id')
+            ->select('posts.id AS id', 'post_content', 'user_id', 'name')
             ->get();
 
         if (!is_null($posts)) {
             return response([
                 'message' => 'Retrieve All posts Success',
+                'data' => $posts
+            ], 200);
+        }
+
+        return response([
+            'message' => 'posts not found',
+            'data' => null
+        ], 404);
+    }
+
+    public function showUserPosts($id)
+    {
+        $posts = DB::table('users')
+            ->join('posts', 'users.id', '=', 'posts.user_id')
+            ->select('posts.id AS id', 'post_content', 'user_id', 'name')
+            ->where('user_id', '=', $id)
+            ->get();
+
+//        $userPosts = $posts
+//            ->where('user_id', '=', $id)
+//            ->get();
+
+        if (!is_null($posts)) {
+            return response([
+                'message' => 'Retrieve User posts Success',
                 'data' => $posts
             ], 200);
         }
@@ -78,8 +103,7 @@ class PostController extends Controller
             'user_id' => 'required|numeric'
         ]);
 
-        if ($validate->fails())
-        {
+        if ($validate->fails()) {
             return response(['message' => $validate->errors()], 400);
         }
 
@@ -101,7 +125,7 @@ class PostController extends Controller
             ], 404);
         }
 
-        if($post->delete()) {
+        if ($post->delete()) {
             return response([
                 'message' => 'Delete post Success',
                 'data' => $post
@@ -117,8 +141,7 @@ class PostController extends Controller
     public function update(Request $request, $id)
     {
         $post = Post::find($id);
-        if (is_null($post))
-        {
+        if (is_null($post)) {
             return response([
                 'message' => 'Post Not Found',
                 'data' => null
@@ -130,8 +153,7 @@ class PostController extends Controller
             'post_content' => 'required'
         ]);
 
-        if ($validate->fails())
-        {
+        if ($validate->fails()) {
             return response(['message' => $validate->errors()], 400);
         }
 

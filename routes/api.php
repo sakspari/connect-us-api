@@ -47,6 +47,7 @@ Route::group(['middleware'=>'auth:api'],function(){ //setelah login baru bisa di
 
     Route::get('post/{id}', 'Api\PostController@show');
     Route::get('post', 'Api\PostController@showAll');
+    Route::get('postfrom/{id}', 'Api\PostController@showUserPosts');
     Route::delete('post/{id}', 'Api\PostController@destroy');
     Route::post('post', 'Api\PostController@store');
     Route::put('post/{id}', 'Api\PostController@update');
