@@ -12,11 +12,11 @@ use Illuminate\Support\Facades\DB;
 
 class FeedbackController extends Controller
 {
-    public index()
+    public function index()
     {
         $feedbacks = DB::table('feedback')
             ->join('users', 'users.id', '=', 'feedback.user_id')
-            ->select('id', 'feedback_content', 'feedback_star')
+            ->select('id', 'feedback_content', 'feedback_star', 'name')
             ->get();
         
         if (!is_null($feedbacks)) {
@@ -27,7 +27,7 @@ class FeedbackController extends Controller
         }
 
         return response([
-            'message' => 'posts not found',
+            'message' => 'feedback not found',
             'data' => null
         ], 404);
     }
@@ -72,7 +72,7 @@ class FeedbackController extends Controller
 
     public function destroy($id)
     {
-        $feedback = Feedback::find($id);
+        $feedbacks = Feedback::where('user_id', '=' , $id)->get();
         
         if (is_null($feedback)) {
             return response([
@@ -96,7 +96,8 @@ class FeedbackController extends Controller
 
     public function update(Request $request, $id)
     {
-        $feedback = Feedback::find($id);
+        $feedbacks = Feedback::where('user_id', '=' , $id)->get();
+        
         if (is_null($feedback))
         {
             return response([
