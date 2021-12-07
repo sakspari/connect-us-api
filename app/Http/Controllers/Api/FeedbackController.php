@@ -7,10 +7,31 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Validator;
 use App\Models\Feedback;
+use Illuminate\Support\Facades\DB;
 
 
 class FeedbackController extends Controller
 {
+    public index()
+    {
+        $feedbacks = DB::table('feedback')
+            ->join('users', 'users.id', '=', 'feedback.user_id')
+            ->select('id', 'feedback_content', 'feedback_star')
+            ->get();
+        
+        if (!is_null($feedbacks)) {
+            return response([
+                'message' => 'Retrieve All feedbacks Success',
+                'data' => $feedbacks
+            ], 200);
+        }
+
+        return response([
+            'message' => 'posts not found',
+            'data' => null
+        ], 404);
+    }
+    
     public function show($id)
     {
         $feedbacks = Feedback::where('user_id', '=' , $id)->get();
