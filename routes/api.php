@@ -59,6 +59,12 @@ Route::group(['middleware'=>'auth:api'],function(){ //setelah login baru bisa di
     Route::post('comment/{post_id}/{user_id}', 'Api\CommentController@storeInPost');
     Route::put('comment/{id}', 'Api\CommentController@update');
     Route::delete('comment/{id}', 'Api\CommentController@destroy');
+
+    Route::get('feedback/{id}', 'Api\FeedbackController@show');
+    Route::get('feedback/index', 'Api\FeedbackController@index');
+    Route::delete('feedback/{id}', 'Api\FeedbackController@destroy');
+    Route::post('feedback', 'Api\FeedbackController@store');
+    Route::put('feedback/{id}', 'Api\FeedbackController@update');
 });
 
 
