@@ -38,13 +38,13 @@ class FeedbackController extends Controller
         
         if (!is_null($feedbacks)) {
             return response([
-                'message' => 'Retrieve All feedbacks Success',
+                'message' => 'Retrieve feedback Success',
                 'data' => $feedbacks
             ], 200);
         }
 
         return response([
-            'message' => 'posts not found',
+            'message' => 'feedback not found',
             'data' => null
         ], 404);
     }
