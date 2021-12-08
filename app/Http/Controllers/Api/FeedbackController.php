@@ -34,7 +34,7 @@ class FeedbackController extends Controller
     
     public function show($id)
     {
-        $feedbacks = Feedback::where('user_id', '=' , $id)->get();
+        $feedbacks = Feedback::where('user_id', '=' , $id)->first();
         
         if (!is_null($feedbacks)) {
             return response([
@@ -72,7 +72,7 @@ class FeedbackController extends Controller
 
     public function destroy($id)
     {
-        $feedbacks = Feedback::where('user_id', '=' , $id)->get();
+        $feedback = Feedback::where('user_id', '=' , $id)->first();
         
         if (is_null($feedback)) {
             return response([
@@ -96,7 +96,7 @@ class FeedbackController extends Controller
 
     public function update(Request $request, $id)
     {
-        $feedbacks = Feedback::where('user_id', '=' , $id)->get();
+        $feedback = Feedback::where('user_id', '=' , $id)->first();
         
         if (is_null($feedback))
         {
